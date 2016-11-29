@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 //@EnableJpaRepositories
-public class H22RestApplication {
+public class RESTdemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(H22RestApplication.class, args);
+		SpringApplication.run(RESTdemoApplication.class, args);
 	}
 }

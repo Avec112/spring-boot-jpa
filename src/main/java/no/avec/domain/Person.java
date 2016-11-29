@@ -6,22 +6,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by avec on 25/11/2016.
  */
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
-public class Person {
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private int age;
-    private Sex sex;
+    private Long id = 0L;
+    @NonNull private String firstName;
+    @NonNull private String lastName;
+    @NonNull private int age;
+    @NonNull private Sex sex;
 
     public enum Sex {
         MALE,

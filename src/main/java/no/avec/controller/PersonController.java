@@ -4,74 +4,39 @@ import lombok.extern.slf4j.Slf4j;
 import no.avec.domain.Person;
 import no.avec.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * Created by avec on 25/11/2016.
  */
-@Controller
-@Path("/person")
+@RestController
+@RequestMapping(value="/person")
 @Slf4j
 public class PersonController {
 
     @Autowired
-    //private PersonService service;
     private PersonRepository personRepository;
 
-
-
-    @GET
-    @Path("{id}")
-    @Produces("application/json")
-    public Person findPersonById(@PathParam("id") Long id) {
-        log.debug("findPersonById({})", id);
-        return personRepository.findOne(id);
-        //return service.findById(id);
-    }
-    @GET
-    @Path("/firstName/{firstName}")
-    @Produces("application/json")
-    public List<Person> findPersonByFirstName(@PathParam("firstName") String firstName) {
-        log.debug("findPersonByFirstName({})", firstName);
-        return personRepository.findByFirstName(firstName);
-        //return service.findById(id);
-    }
-
-    @GET
-    @Path("/lastName/{lastName}")
-    @Produces("application/json")
-    public List<Person> findPersonByLastName(@PathParam("lastName") String lastName) {
-        log.debug("findPersonByLastName({})", lastName);
-        return personRepository.findByLastName(lastName);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response delete(@PathParam("id") Long id) {
-        log.debug("delete({})", id);
-        return Response.accepted().build();
-    }
-
-
-    @GET
-    @Produces("application/json")
-    public Iterable<Person> findAll() {
-        log.debug("findAll()");
+    @RequestMapping(headers="Accept=application/person-1.0+json")
+    public Iterable<Person> findPerson() {
+        log.debug("findPerson() v1.0");
         return personRepository.findAll();
-        //return service.findAllPersons();
+    }
+
+    @RequestMapping(headers="Accept=application/person-2.0+json")
+    public Iterable<Person> findPerson_2_0() {
+        log.debug("findPerson() v2.0");
+        return personRepository.findAll();
     }
 
     @PostConstruct
     private void fakeFillDb() {
-        personRepository.save(new Person(0L, "Abraham", "Doe", 41, Person.Sex.MALE));
-        personRepository.save(new Person(0L, "Bernhard", "Doe", 42, Person.Sex.MALE));
-        personRepository.save(new Person(0L, "Cecil", "Doe", 43, Person.Sex.MALE));
-        personRepository.save(new Person(0L, "Don", "Doe", 44, Person.Sex.MALE));
-        personRepository.save(new Person(0L, "Abraham", "Moe", 45, Person.Sex.MALE));
+        personRepository.save(new Person("Abraham", "Doe", 41, Person.Sex.MALE));
+        personRepository.save(new Person("Bernhard", "Doe", 42, Person.Sex.MALE));
+        personRepository.save(new Person("Cecil", "Doe", 43, Person.Sex.MALE));
+        personRepository.save(new Person("Don", "Doe", 44, Person.Sex.MALE));
     }
 }
